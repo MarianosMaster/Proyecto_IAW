@@ -2,10 +2,20 @@
 function insert_user_bd($pdo)
 {
     try {
-        $filasInsertadas = $pdo->exec("INSERT INTO usuarios VALUES(NULL,'Juan', 'mail.com', '555', 'test')");
-        echo "Se ha añadido $filasInsertadas filas <br />";
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        $rol = "R";
+        $sql = "INSERT INTO usuarios (user, password, rol, mail) VALUES(:user, :password, :rol, :mail)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user', $name);
+        $stmt->bindParam(':mail', $email);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':rol', $rol);
+        $stmt->execute();
+        echo "Se ha añadido $sql filas <br />";
     } catch (PDOException $excepcion) {
-        echo "Error" . $excepcion->getMessage();
+        echo "Error en el registro" . $excepcion->getMessage();
     }
 }
 

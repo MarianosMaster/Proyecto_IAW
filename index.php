@@ -35,23 +35,33 @@ $pdo = connect_bd();
         <div class="login-container">
             <h1>Iniciar Sesión</h1>
             <?php if (isset($_SESSION['error'])): ?>
-    <div class="error-message">
-        <?php 
-        echo $_SESSION['error']; 
-        unset($_SESSION['error']); 
-        ?>
-    </div>
-<?php endif; ?>
+                <div class="error-message">
+                    <?php
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    ?>
+                </div>
+            <?php endif; ?>
             <form action="./paginas/login.php" method="POST">
                 <input type="text" name="username" placeholder="Usuario" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-                <input type="hidden" name="token"
-                    value="<?php echo $_SESSION['token']; ?>">
-                <button type="submit">Entrar</button>
-                
+                <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+
+                <button type="submit" class="btn btn-primary">
+                    Entrar
+                </button>
             </form>
-            <h4 style="margin-bottom: 0; ">No tienes una cuenta?</h4>
-            <button class="registerButton" href="./paginas/register.php">Regístrate</button>
+
+
+
+
+            <h4 style="margin-bottom: 0;">No tienes una cuenta?</h4>
+
+            <a href="./paginas/register.php" class="btn btn-secondary">
+                Regístrate
+            </a>
+
+
             <?php if (isset($pdo)): ?>
                 <div class="status">
                     ✓ Conectado a la base de datos
