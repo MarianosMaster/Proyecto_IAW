@@ -23,11 +23,9 @@ $pdo = connect_bd();
 <body>
     <header class="main-header">
         <div class="header-content">
-            <div class="logo">Proyecto IAW</div>
+            <div class="logo">GeekVault</div>
             <nav>
                 <ul>
-
-                    <li><a href="#">Catálogo</a></li>
                     <li><a href="./paginas/contacto.php">Contacto</a></li>
                 </ul>
             </nav>
