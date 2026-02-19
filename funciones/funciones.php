@@ -13,7 +13,8 @@ function insert_user_bd($pdo)
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':rol', $rol);
         $stmt->execute();
-        echo "Se ha añadido $sql filas <br />";
+        header('Location: ../index.php');
+        exit();
     } catch (PDOException $excepcion) {
         echo "Error en el registro" . $excepcion->getMessage();
     }

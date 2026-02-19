@@ -1,7 +1,9 @@
 <?php
 include('funciones/funciones_bd.php');
 session_start();
-$_SESSION['token'] = bin2hex(random_bytes(32));
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
 $pdo = connect_bd();
 ?>
 <!DOCTYPE html>
@@ -14,6 +16,7 @@ $pdo = connect_bd();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -23,9 +26,9 @@ $pdo = connect_bd();
             <div class="logo">Proyecto IAW</div>
             <nav>
                 <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Documentación</a></li>
-                    <li><a href="#">Contacto</a></li>
+
+                    <li><a href="#">Catálogo</a></li>
+                    <li><a href="./paginas/contacto.php">Contacto</a></li>
                 </ul>
             </nav>
         </div>
@@ -43,8 +46,18 @@ $pdo = connect_bd();
                 </div>
             <?php endif; ?>
             <form action="./paginas/login.php" method="POST">
-                <input type="text" name="username" placeholder="Usuario" required>
-                <input type="password" name="password" placeholder="Contraseña" required>
+                <div class="input-group">
+                    <input type="text" name="username" placeholder=" " required>
+                    <label>Usuario</label>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="password" placeholder=" " required>
+                    <label>Contraseña</label>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
                 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
 
                 <button type="submit" class="btn btn-primary">
