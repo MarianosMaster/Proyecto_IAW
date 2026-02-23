@@ -20,8 +20,7 @@ $pdo = connect_bd();
 
 <body>
     <header class="main-header">
-        <div class="header-content">
-            <div class="logo">GeekVault</div>
+        <div class="header-content" style="justify-content: flex-end;">
             <nav>
                 <ul>
                     <li><a href="../index.php">Inicio</a></li>
@@ -30,10 +29,13 @@ $pdo = connect_bd();
             </nav>
         </div>
     </header>
-    <main>
+    <main style="flex-direction: column;">
+        <div class="hero-logo-container">
+            <img src="../imagenes/logo.png" alt="Logotipo GeekVault" class="hero-logo">
+        </div>
         <div class="register-container">
             <h1>Crea tu nueva cuenta</h1>
-
+            <!-- Formulario de registro -->
             <form method="POST">
 
                 <div class="input-group">

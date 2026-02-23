@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <!-- Formulario de gestión de productos -->
     <div class="form-container">
         <h2>
             <?php echo $es_edicion ? 'Editar Producto' : 'Nuevo Producto'; ?>

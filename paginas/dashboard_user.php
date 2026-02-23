@@ -3,14 +3,20 @@ session_start();
 include('../funciones/funciones_bd.php');
 include('../funciones/funciones.php');
 
-// Verificación de seguridad: Usuario Registrado o Admin
+// Usuario Registrado o Admin
 if (!isset($_SESSION['user'])) {
     header('Location: ../index.php');
     exit();
 }
 
 $pdo = connect_bd();
-$productos = obtener_productos($pdo);
+$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
+// Si la barra de búsqueda no está vacía, busca el producto, si no, muestra todos los productos
+if ($busqueda !== '') {
+    $productos = buscar_producto_por_nombre($pdo, $busqueda);
+} else {
+    $productos = obtener_productos($pdo);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,8 +35,16 @@ $productos = obtener_productos($pdo);
 <body>
     <header class="main-header">
         <div class="header-content">
-            <div class="logo">Hola,
-                <?php echo htmlspecialchars($_SESSION['user']); ?>
+            <div class="logo" style="display:flex; align-items:center; gap: 15px;">
+                <a href="dashboard_user.php"
+                    style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
+                    <img src="../imagenes/logo.png" alt="Logo GeekVault" class="logo-img">
+                    GeekVault
+                </a>
+                <!-- Barra de búsqueda -->
+                <span
+                    style="border-left: 2px solid #334155; padding-left: 15px; font-size: 1.1rem; text-transform: none; letter-spacing: normal; font-weight: 500;">Hola,
+                    <?php echo htmlspecialchars($_SESSION['user']); ?></span>
             </div>
             <nav>
                 <ul>
@@ -42,8 +56,20 @@ $productos = obtener_productos($pdo);
     </header>
 
     <main class="dashboard-container">
-        <h1>Productos Disponibles</h1>
-        <!-- R7B: Usuario registrado solo puede consultar información (R6) -->
+        <div class="top-bar">
+            <h1>Productos Disponibles</h1>
+            <!-- Formulario de búsqueda -->
+            <form method="GET" class="search-form" style="display: flex; gap: 10px; margin: 0;">
+                <input type="text" name="busqueda" placeholder="Buscar producto..."
+                    value="<?php echo htmlspecialchars($busqueda); ?>" style="margin: 0;">
+                <button type="submit">Buscar</button>
+                <?php if ($busqueda !== ''): ?>
+                    <a href="dashboard_user.php" class="btn-secondary" style="padding: 8px 15px; width: auto;">Limpiar</a>
+                <?php endif; ?>
+            </form>
+        </div>
+
+        <!-- listado de productos -->
         <div class="products-grid">
             <?php foreach ($productos as $producto): ?>
                 <div class="product-card">
@@ -60,7 +86,8 @@ $productos = obtener_productos($pdo);
                         <?php echo htmlspecialchars($producto['stock']); ?> unid.
                     </div>
                 </div>
-            <?php endforeach; ?>
+                <?php
+            endforeach; ?>
         </div>
     </main>
 </body>

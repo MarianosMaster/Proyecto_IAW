@@ -14,8 +14,7 @@
 
 <body>
     <header class="main-header">
-        <div class="header-content">
-            <div class="logo">GeekVault</div>
+        <div class="header-content" style="justify-content: flex-end;">
             <nav>
                 <ul>
                     <li><a href="../index.php">Inicio</a></li>
@@ -24,8 +23,11 @@
             </nav>
         </div>
     </header>
-
-    <main>
+    <!-- Formulario de contacto -->
+    <main style="flex-direction: column;">
+        <div class="hero-logo-container">
+            <img src="../imagenes/logo.png" alt="Logotipo GeekVault" class="hero-logo">
+        </div>
         <div class="contact-container">
             <div class="contact-header">
                 <h2>Contáctanos</h2>
@@ -63,7 +65,6 @@
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Simple acknowledgment for now
         echo "<script>alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');</script>";
     }
     ?>

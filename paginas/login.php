@@ -15,7 +15,7 @@ if (isset($_POST['token'])) {
 
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
+        // Verificación de usuario, contraseña y rol
 
         if ($usuario && password_verify($pass, $usuario['password'])) {
             $_SESSION['user'] = $usuario['user'];

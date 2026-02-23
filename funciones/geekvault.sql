@@ -122,9 +122,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`user`, `password`, `rol`, `mail`) VALUES
-('admin', '1234', 'A', 'admin@riberadeltajo.es'),
-('registrado', '1234', 'R', 'registrado@riberadeltajo.es'),
-('usuarioprueba', '1234', 'R', 'usuarioprueba@gmail.com');
+('admin', '$2y$10$3kdXyNAuntdUSzBGnn3r8eC3FWpH76HDlUSV40dL4Q8dULAWzvr6y', 'A', 'admin@riberadeltajo.es'),
+('registrado', '$2y$10$3kdXyNAuntdUSzBGnn3r8eC3FWpH76HDlUSV40dL4Q8dULAWzvr6y', 'R', 'registrado@riberadeltajo.es'),
+('usuarioprueba', '$2y$10$3kdXyNAuntdUSzBGnn3r8eC3FWpH76HDlUSV40dL4Q8dULAWzvr6y', 'R', 'usuarioprueba@gmail.com');
 
 --
 -- Índices para tablas volcadas

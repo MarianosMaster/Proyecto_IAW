@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Registra un nuevo usuario en la base de datos a partir de un formulario POST.
+ * Tras hacerlo, redirige al índice.
+ *
+ * @param PDO $pdo Instancia de la conexión a la base de datos.
+ * @return void No devuelve valor, realiza una redirección de cabecera.
+ */
 function insert_user_bd($pdo)
 {
     try {
@@ -24,16 +32,16 @@ function insert_user_bd($pdo)
 
 
 /**
- * R6: Función para obtener todos los productos.
- * Utiliza PDO para realizar una consulta segura.
+ * Obtiene la lista completa de todos los productos.
+ *
+ * @param PDO $pdo Instancia de la conexión a la base de datos.
+ * @return array Lista de productos como array asociativo.
  */
 function obtener_productos($pdo)
 {
     try {
-        // Preparamos la consulta SQL para seleccionar todos los productos
         $sql = "SELECT * FROM productos";
         $stmt = $pdo->query($sql);
-        // Devolvemos el resultado como un array asociativo
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo "Error al obtener productos: " . $e->getMessage();
@@ -42,31 +50,41 @@ function obtener_productos($pdo)
 }
 
 /**
- * R6A: Función para obtener un producto específico por su ID.
- * Utiliza sentencias preparadas para mayor seguridad.
+ * Busca productos cuyo nombre coincida de forma dinámica, es decir, que contenga alguna letra o conjunto de letras.
+ *
+ * @param PDO    $pdo    Instancia de la conexión a la base de datos.
+ * @param string $nombre El término o nombre parcial a buscar.
+ * @return array Conjunto de resultados que coinciden con la búsqueda.
  */
-function obtener_producto_por_id($pdo, $id)
+function buscar_producto_por_nombre($pdo, $nombre)
 {
     try {
-        $sql = "SELECT * FROM productos WHERE id = :id";
+        $sql = "SELECT * FROM productos WHERE nombre LIKE :nombre";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':nombre', '%' . $nombre . '%');
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        echo "Error al obtener el producto: " . $e->getMessage();
-        return null;
+        echo "Error al buscar productos: " . $e->getMessage();
+        return [];
     }
 }
 
+
 /**
- * R3: Función para insertar un nuevo producto en la base de datos.
- * Solo accesible por administradores (controlado en el frontend/lógica de página).
+ * Inserta un nuevo producto en el catálogo.
+ *
+ * @param PDO    $pdo         Instancia de la conexión a la base de datos.
+ * @param string $nombre      Nombre del producto.
+ * @param string $descripcion Detalles del producto.
+ * @param float  $precio      Precio del producto.
+ * @param int    $stock       Cantidad de unidades disponibles.
+ * @return bool  True si se creó correctamente, false si falló.
  */
+
 function crear_producto($pdo, $nombre, $descripcion, $precio, $stock)
 {
     try {
-        // Asumimos categoria_id y proveedor_id = 1 por defecto para cumplir con la FK si existe
         $sql = "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, proveedor_id) 
                 VALUES (:nombre, :descripcion, :precio, :stock, 1, 1)";
         $stmt = $pdo->prepare($sql);
@@ -83,7 +101,15 @@ function crear_producto($pdo, $nombre, $descripcion, $precio, $stock)
 }
 
 /**
- * R4: Función para modificar un producto existente.
+ * Actualiza los datos de un producto existente.
+ *
+ * @param PDO    $pdo         Instancia de la conexión a la base de datos.
+ * @param int    $id          ID del producto a modificar.
+ * @param string $nombre      Nuevo nombre.
+ * @param string $descripcion Nueva descripción.
+ * @param float  $precio      Nuevo precio.
+ * @param int    $stock       Nuevo stock.
+ * @return bool  True si se actualizó con éxito, false en caso contrario.
  */
 function actualizar_producto($pdo, $id, $nombre, $descripcion, $precio, $stock)
 {
@@ -103,10 +129,14 @@ function actualizar_producto($pdo, $id, $nombre, $descripcion, $precio, $stock)
         return false;
     }
 }
-
 /**
- * R5: Función para borrar un producto.
+ * Elimina permanentemente un producto de la base de datos.
+ *
+ * @param PDO $pdo Instancia de la conexión a la base de datos.
+ * @param int $id  Identificador del producto.
+ * @return bool True si el borrado fue exitoso, false si falló.
  */
+
 function borrar_producto($pdo, $id)
 {
     try {
@@ -122,13 +152,19 @@ function borrar_producto($pdo, $id)
 }
 
 /**
- * R2: Función para modificar el perfil del usuario (nombre y contraseña).
- * Devuelve true si la actualización fue exitosa.
+ * Actualiza el nombre de usuario y la contraseña en la base de datos.
+ *
+ * Esta función cifra la nueva contraseña y actualiza el registro correspondiente.
+ *
+ * @param PDO    $pdo             Instancia de la conexión a la base de datos.
+ * @param string $usuario_actual  El nombre de usuario actual para identificar el registro.
+ * @param string $nuevo_usuario   El nuevo nombre de usuario que se desea establecer.
+ * @param string $nueva_password  La nueva contraseña (será cifrada).
+ * @return bool Devuelve true si la actualización fue exitosa, false en caso de error.
  */
 function actualizar_perfil($pdo, $usuario_actual, $nuevo_usuario, $nueva_password)
 {
     try {
-        // Hasheamos la nueva contraseña
         $password_hash = password_hash($nueva_password, PASSWORD_DEFAULT);
 
         $sql = "UPDATE usuarios SET user = :nuevo_usuario, password = :password WHERE user = :usuario_actual";

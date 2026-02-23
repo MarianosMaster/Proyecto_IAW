@@ -1,6 +1,7 @@
 <?php
 include('funciones/funciones_bd.php');
 session_start();
+//Crear token
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
@@ -22,8 +23,7 @@ $pdo = connect_bd();
 
 <body>
     <header class="main-header">
-        <div class="header-content">
-            <div class="logo">GeekVault</div>
+        <div class="header-content" style="justify-content: flex-end;">
             <nav>
                 <ul>
                     <li><a href="./paginas/contacto.php">Contacto</a></li>
@@ -31,8 +31,11 @@ $pdo = connect_bd();
             </nav>
         </div>
     </header>
-
-    <main>
+    <!-- Formulario de login -->
+    <main style="flex-direction: column;">
+        <div class="hero-logo-container">
+            <img src="./imagenes/logo.png" alt="Logotipo GeekVault" class="hero-logo">
+        </div>
         <div class="login-container">
             <h1>Iniciar Sesión</h1>
             <?php if (isset($_SESSION['error'])): ?>
@@ -67,7 +70,7 @@ $pdo = connect_bd();
 
 
             <h4 style="margin-bottom: 0;">No tienes una cuenta?</h4>
-
+            <!-- Botón de registro -->
             <a href="./paginas/register.php" class="btn btn-secondary">
                 Regístrate
             </a>

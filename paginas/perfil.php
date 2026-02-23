@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nuevo_usuario) && !empty($nueva_pass)) {
         $pdo = connect_bd();
-        // R2: Modificación de nombre de usuario y contraseña
+        // Modificación de nombre de usuario y contraseña
         if (actualizar_perfil($pdo, $_SESSION['user'], $nuevo_usuario, $nueva_pass)) {
-            $_SESSION['user'] = $nuevo_usuario; // Actualizamos la sesión
+            $_SESSION['user'] = $nuevo_usuario;
             $mensaje = "Perfil actualizado con éxito.";
             $tipo_mensaje = "success";
         } else {
