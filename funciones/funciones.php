@@ -70,6 +70,27 @@ function buscar_producto_por_nombre($pdo, $nombre)
     }
 }
 
+/**
+ * Recupera la información detallada de un producto específico por su ID.
+ *
+ * @param PDO $pdo Instancia de la conexión a la base de datos.
+ * @param int $id  El identificador único del producto.
+ * @return array|null El producto encontrado o null si no existe o hay error.
+ */
+function obtener_producto_por_id($pdo, $id)
+{
+    try {
+        $sql = "SELECT * FROM productos WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error al obtener el producto: " . $e->getMessage();
+        return null;
+    }
+}
+
 
 /**
  * Inserta un nuevo producto en el catálogo.
