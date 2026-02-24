@@ -111,7 +111,7 @@ INSERT INTO `proveedores` (`id`, `nombre`, `mail`, `telefono`, `direccion`) VALU
 --
 
 CREATE TABLE `usuarios` (
-  `user` varchar(50) NOT NULL,
+  `user` varchar(50) PRIMARY KEY,
   `password` varchar(255) NOT NULL,
   `rol` varchar(1) NOT NULL CHECK (`rol` in ('A','R')),
   `mail` varchar(100) NOT NULL
