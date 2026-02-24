@@ -1,10 +1,6 @@
 <?php
 include('funciones/funciones_bd.php');
-session_start();
-//Crear token
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
-}
+
 $pdo = connect_bd();
 ?>
 <!DOCTYPE html>
@@ -23,7 +19,13 @@ $pdo = connect_bd();
 
 <body>
     <header class="main-header">
-        <div class="header-content" style="justify-content: flex-end;">
+        <div class="header-content">
+            <div class="logo" style="display:flex; align-items:start; gap: 15px;">
+                <a href="index.php"
+                    style="display: flex; align-items: center; text-decoration: none; color: inherit; gap: 10px;">
+                    <img src="./imagenes/logo.png" alt="Logo GeekVault" class="logo-img">
+                </a>
+            </div>
             <nav>
                 <ul>
                     <li><a href="./paginas/contacto.php">Contacto</a></li>
